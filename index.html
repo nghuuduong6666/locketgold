@@ -1,68 +1,243 @@
-const yearEl = document.getElementById("year");
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
-
-const toastEl = document.getElementById("toast");
-const copyModuleBtn = document.getElementById("copy-module-btn");
-
-function showToast(msg) {
-  if (!toastEl) return;
-  toastEl.textContent = msg;
-}
-
-function fallbackCopyText(text) {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.setAttribute("readonly", "");
-  textArea.style.position = "fixed";
-  textArea.style.top = "0";
-  textArea.style.left = "-9999px";
-  document.body.appendChild(textArea);
-
-  textArea.focus();
-  textArea.select();
-  textArea.setSelectionRange(0, text.length);
-
-  let ok = false;
-  try {
-    ok = document.execCommand("copy");
-  } catch {
-    ok = false;
-  }
-
-  document.body.removeChild(textArea);
-  return ok;
-}
-
-async function copyToClipboard(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      return fallbackCopyText(text);
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên Hệ | Ng Huu Duong</title>
+  <!-- Thư viện icon FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --border-color: #30363d;
+      --text-main: #f0f6fc;
+      --text-sub: #8b949e;
+      --accent: #58a6ff;
+      --btn-hover: #21262d;
     }
-  }
-  return fallbackCopyText(text);
-}
 
-if (copyModuleBtn) {
-  copyModuleBtn.addEventListener("click", async () => {
-    const url =
-      copyModuleBtn.getAttribute("data-url") ||
-      "https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule";
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    const copied = await copyToClipboard(url);
-    if (copied) {
-      const originalText = copyModuleBtn.textContent;
-      copyModuleBtn.textContent = "Đã sao chép ✓";
-      showToast("Đã sao chép Module!");
-      setTimeout(() => {
-        copyModuleBtn.textContent = originalText;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px 28px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .bio {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .contact-item:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Hiệu ứng màu riêng cho Facebook và Instagram khi rê chuột */
+    .contact-item.facebook:hover {
+      border-color: #1877F2;
+    }
+    .contact-item.facebook i.brand-icon {
+      color: #1877F2;
+    }
+
+    .contact-item.instagram:hover {
+      border-color: #E4405F;
+    }
+    .contact-item.instagram i.brand-icon {
+      color: #E4405F;
+    }
+
+    .contact-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contact-left i {
+      font-size: 18px;
+      width: 20px;
+      text-align: center;
+      color: var(--accent);
+    }
+
+    .action-badge {
+      font-size: 12px;
+      color: var(--text-sub);
+      background: var(--card-bg);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .contact-item:hover .action-badge {
+      color: var(--text-main);
+      border-color: var(--accent);
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-card">
+    <img src="https://github.com/nghuuduong6666.png" alt="Avatar" class="avatar">
+    
+    <h1>Ng Huu Duong</h1>
+    <p class="bio">Kết nối với mình qua các kênh bên dưới nhé!</p>
+
+    <div class="links-container">
+      <!-- Link Facebook -->
+      <a href="https://facebook.com/anhduongsongan" target="_blank" rel="noopener noreferrer" class="contact-item facebook">
+        <div class="contact-left">
+          <i class="fa-brands fa-facebook brand-icon"></i>
+          <span>Facebook</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px; color: #8b949e;"></i>
+      </a>
+
+      <!-- Link Instagram -->
+      <a href="https://instagram.com/nghuuduong" target="_blank" rel="noopener noreferrer" class="contact-item instagram">
+        <div class="contact-left">
+          <i class="fa-brands fa-instagram brand-icon"></i>
+          <span>Instagram</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 12px; color: #8b949e;"></i>
+      </a>
+      
+      <!-- Sao Chép Module -->
+      <div class="contact-item copy-module" role="button" tabindex="0" onclick="copyText('https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyText('https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule', this);}">
+        <div class="contact-left">
+          <i class="fa-solid fa-puzzle-piece"></i>
+          <span>Module</span>
+        </div>
+        <span class="action-badge copy-badge">Sao chép</span>
+      </div>
+
+      <!-- Cài cấu hình DNS vào máy -->
+      <a href="https://apple.nextdns.io/?profile=a2dd89" target="_blank" rel="noopener noreferrer" class="contact-item">
+        <div class="contact-left">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>DNS</span>
+        </div>
+        <span class="action-badge">Cài vào máy</span>
+      </a>
+    </div>
+
+    <footer>© 2026 • Hosted on GitHub Pages</footer>
+  </div>
+
+  <script>
+    function showCopiedState(element) {
+      const badge = element.querySelector('.copy-badge');
+      const originalText = badge.innerText;
+      badge.innerText = 'Đã chép!';
+      badge.style.color = '#3fb950';
+      badge.style.borderColor = '#3fb950';
+
+      clearTimeout(element._copyTimer);
+      element._copyTimer = setTimeout(() => {
+        badge.innerText = originalText;
+        badge.style.color = '';
+        badge.style.borderColor = '';
       }, 2000);
-    } else {
-      showToast("Trình duyệt chặn tự động sao chép.");
     }
-  });
-}
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+
+    function copyText(text, element) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(() => showCopiedState(element))
+          .catch(() => {
+            fallbackCopy(text);
+            showCopiedState(element);
+          });
+      } else {
+        fallbackCopy(text);
+        showCopiedState(element);
+      }
+    }
+  </script>
+
+</body>
+</html>
