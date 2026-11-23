@@ -3,121 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Module &amp; DNS Setup</title>
+  <title>Locket Gold</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav-wrapper">
-      <a href="#" class="logo">iOS Config</a>
-      <nav class="nav">
-        <a href="#copy-module">Sao chép module</a>
-        <a href="#setup-dns">Cài DNS</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="section">
-    <div class="container">
-      <h1>Cài đặt Module &amp; DNS</h1>
-      <p class="subtitle">Sao chép nhanh link module và cấu hình DNS để sử dụng.</p>
-
-      <div class="two-cols">
-        <!-- MỤC 1: KHUNG SAO CHÉP MODULE -->
-        <section id="copy-module" class="card-frame">
-          <div class="card-header">
-            <span class="badge">Mục 1</span>
-            <h2>Sao chép module</h2>
-          </div>
-
-          <div class="card-body">
-            <p class="desc">Chọn module bên dưới, bấm <strong>Sao chép</strong> rồi dán vào mục <em>Module</em> trong ứng dụng (Shadowrocket / Surge / Loon):</p>
-
-            <div class="inner-frame">
-              <label for="module-select" class="label">Danh sách module</label>
-              <select id="module-select" class="select">
-                <option value="https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule">
-                  Locket Gold
-                </option>
-              </select>
-
-              <label class="label">Đường dẫn module</label>
-              <div class="code-box">
-                <code id="module-code">https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule</code>
-                <button type="button" class="btn btn-sm" id="copy-module-btn">Sao chép</button>
-              </div>
-            </div>
-
-            <p id="module-status" class="status" aria-live="polite"></p>
-          </div>
-        </section>
-
-        <!-- MỤC 2: KHUNG CÀI DNS -->
-        <section id="setup-dns" class="card-frame">
-          <div class="card-header">
-            <span class="badge">Mục 2</span>
-            <h2>Cài DNS</h2>
-          </div>
-
-          <div class="card-body">
-            <p class="desc">Hồ sơ cấu hình DNS dành cho thiết bị Apple (iOS / iPadOS / macOS):</p>
-
-            <div class="inner-frame">
-              <div class="dns-table-wrap">
-                <table class="dns-table">
-                  <thead>
-                    <tr>
-                      <th>Mục</th>
-                      <th>Giá trị cấu hình</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Profile NextDNS</td>
-                      <td><code>a2dd89</code></td>
-                    </tr>
-                    <tr>
-                      <td>Link cài đặt</td>
-                      <td><code>https://apple.nextdns.io/?profile=a2dd89</code></td>
-                    </tr>
-                    <tr>
-                      <td>Hướng dẫn iOS</td>
-                      <td>Mở bằng Safari &rarr; Tải cấu hình &rarr; Cài đặt &rarr; Đã tải về hồ sơ</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <label class="label">Link cấu hình DNS</label>
-              <div class="code-box">
-                <code id="dns-snippet">https://apple.nextdns.io/?profile=a2dd89</code>
-                <button type="button" class="btn btn-sm" id="copy-dns-btn">Sao chép DNS</button>
-              </div>
-            </div>
-
-            <div class="action-row">
-              <a
-                href="https://apple.nextdns.io/?profile=a2dd89"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-outline"
-              >
-                Mở trang cài DNS
-              </a>
-            </div>
-
-            <p id="dns-status" class="status" aria-live="polite"></p>
-          </div>
-        </section>
+  <main class="page">
+    <section class="profile-card">
+      <div class="avatar-ring">
+        <img
+          src="[https://github.com/](https://github.com/)nghuuduong6666.png"
+          alt="Locket Gold"
+          class="avatar"
+        />
       </div>
-    </div>
-  </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> iOS Config • Hosted on GitHub Pages</p>
-    </div>
-  </footer>
+      <h1 class="title">Locket Gold</h1>
+
+      <div class="stack">
+        <div class="item-box">
+          <div class="item-left">
+            <span class="icon-badge module-icon" aria-hidden="true">M</span>
+            <span class="item-label">Module</span>
+          </div>
+          <button
+            type="button"
+            class="action-btn"
+            id="copy-module-btn"
+            data-url="https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule"
+          >
+            Sao chép
+          </button>
+        </div>
+
+        <div class="item-box">
+          <div class="item-left">
+            <span class="icon-badge dns-icon" aria-hidden="true">DNS</span>
+            <span class="item-label">Dns</span>
+          </div>
+          <a
+            href="https://apple.nextdns.io/?profile=a2dd89"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="action-btn"
+          >
+            Cài vào máy
+          </a>
+        </div>
+      </div>
+
+      <p id="toast" class="toast" aria-live="polite"></p>
+
+      <footer class="footer">
+        © <span id="year"></span> • Hosted on GitHub Pages
+      </footer>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
