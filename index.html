@@ -1,64 +1,68 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Locket Gold</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <main class="page">
-    <section class="profile-card">
-      <div class="avatar-ring">
-        <img
-          src="[https://github.com/](https://github.com/)nghuuduong6666.png"
-          alt="Locket Gold"
-          class="avatar"
-        />
-      </div>
+const yearEl = document.getElementById("year");
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
-      <h1 class="title">Locket Gold</h1>
+const toastEl = document.getElementById("toast");
+const copyModuleBtn = document.getElementById("copy-module-btn");
 
-      <div class="stack">
-        <div class="item-box">
-          <div class="item-left">
-            <span class="icon-badge module-icon" aria-hidden="true">M</span>
-            <span class="item-label">Module</span>
-          </div>
-          <button
-            type="button"
-            class="action-btn"
-            id="copy-module-btn"
-            data-url="https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule"
-          >
-            Sao chép
-          </button>
-        </div>
+function showToast(msg) {
+  if (!toastEl) return;
+  toastEl.textContent = msg;
+}
 
-        <div class="item-box">
-          <div class="item-left">
-            <span class="icon-badge dns-icon" aria-hidden="true">DNS</span>
-            <span class="item-label">Dns</span>
-          </div>
-          <a
-            href="https://apple.nextdns.io/?profile=a2dd89"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="action-btn"
-          >
-            Cài vào máy
-          </a>
-        </div>
-      </div>
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.top = "0";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
 
-      <p id="toast" class="toast" aria-live="polite"></p>
+  textArea.focus();
+  textArea.select();
+  textArea.setSelectionRange(0, text.length);
 
-      <footer class="footer">
-        © <span id="year"></span> • Hosted on GitHub Pages
-      </footer>
-    </section>
-  </main>
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
 
-  <script src="script.js"></script>
-</body>
-</html>
+  document.body.removeChild(textArea);
+  return ok;
+}
+
+async function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return fallbackCopyText(text);
+    }
+  }
+  return fallbackCopyText(text);
+}
+
+if (copyModuleBtn) {
+  copyModuleBtn.addEventListener("click", async () => {
+    const url =
+      copyModuleBtn.getAttribute("data-url") ||
+      "https://raw.githubusercontent.com/vuong2023/shad/main/modules/Locket_ohb.sgmodule";
+
+    const copied = await copyToClipboard(url);
+    if (copied) {
+      const originalText = copyModuleBtn.textContent;
+      copyModuleBtn.textContent = "Đã sao chép ✓";
+      showToast("Đã sao chép Module!");
+      setTimeout(() => {
+        copyModuleBtn.textContent = originalText;
+      }, 2000);
+    } else {
+      showToast("Trình duyệt chặn tự động sao chép.");
+    }
+  });
+}
